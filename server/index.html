@@ -21,6 +21,22 @@
         <div class="py-2 mt-2">
           <div>Total File on schedule : {{ total_file }}</div>
           <div>Last Upload : <b>{{ file_date }}</b></div>
+          <div class="mt-2 text-xs text-red-500">
+            * Server akan mengecek dan mengirimkan notif setiap pukul 19.00 WIB,
+            <br />
+            tapi anda dapat mengetes manual dengan klik tombol dibawah ini:
+          </div>
+        </div>
+        <div class="my-5">
+          <button
+            @click="test()"
+            class="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Send & Test Data
+          </button>
+          <div v-if="callback_check">
+            Data berhasil di tes, silahkan cek Telegram!
+          </div>
         </div>
         <div
           v-if="name_file"
@@ -95,6 +111,7 @@
         name_file: false,
         total_file: "-",
         file_date: "",
+        callback_check: false,
       };
     },
     mounted() {
@@ -112,10 +129,19 @@
         });
       },
       count() {
-        axios.get("http://localhost:1337/count").then((res) => {
-          this.total_file = res.data.total_file_row;
-          this.file_date = res.data.file_uploaded;
-        });
+        axios
+          .get("https://sapphire-ladybug-toga.cyclic.app/count")
+          .then((res) => {
+            this.total_file = res.data.total_file_row;
+            this.file_date = res.data.file_uploaded;
+          });
+      },
+      test() {
+        axios
+          .get("https://sapphire-ladybug-toga.cyclic.app/check-today")
+          .then((res) => {
+            this.callback_check = true;
+          });
       },
       submitFile() {
         this.loading = "loading.....";
@@ -124,7 +150,7 @@
 
         console.log("submit file");
         axios
-          .post("http://localhost:1337/upload", formData, {
+          .post("https://sapphire-ladybug-toga.cyclic.app/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
