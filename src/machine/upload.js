@@ -86,17 +86,22 @@ const check_notif_today = async (req, res) => {
     if (found.length > 0) {
       for (const row of found) {
         console.log(row);
-        let dob = new Date(row.K.toString().trim()).toLocaleDateString();
-        let entry_date = new Date(row.H.toString().trim()).toLocaleDateString();
-        let pensiun = new Date(row.M.toString()).toLocaleDateString();
-        let msg = `
-              Data Pensiun | Notif Tgl : ${new Date().toLocaleDateString()}
+        let dob = new Date(row.K.toString().trim()).toLocaleDateString("id-ID");
+        let entry_date = new Date(row.H.toString().trim()).toLocaleDateString(
+          "id-ID"
+        );
+        let pensiun = new Date(row.M.toString()).toLocaleDateString("id-ID");
+        let msg = `*DATA KARYAWAN PENSIUN* \nNotif Tgl : ${new Date().toLocaleDateString(
+          "id-ID"
+        )}
               \nEmploye code: ${row.B.toString().trim()}\nEmploye name: ${row.C.toString().trim()}\nJob Code: ${row.D.toString().trim()}\nSex: ${row.E.toString().trim()}\nStatus: ${row.F.toString().trim()}\nAfedling: ${row.G.toString().trim()}\n Entry Date: ${entry_date}\n Place of Birth: ${row.J.toString().trim()}\n Date of Birth: ${dob}\n Pensiun: ${pensiun}
               `;
         await tele(msg, bot);
       }
     } else {
-      let msg = `Data Pensiun | Notif Tgl : ${new Date().toLocaleDateString()}\nTidak ada terdeteksi.`;
+      let msg = `Data Pensiun | Notif Tgl : ${new Date().toLocaleDateString(
+        "id-ID"
+      )}\nTidak ada terdeteksi.`;
       await tele(msg, bot);
     }
 
