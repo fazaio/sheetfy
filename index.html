@@ -87,11 +87,13 @@
 
         <div class="mt-5 text-right">
           <button
+            v-if="!loading"
             @click="submitFile()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           >
             Upload
           </button>
+          <div v-else>Proses upload data!</div>
         </div>
       </div>
     </div>
@@ -107,7 +109,7 @@
         last: "",
         callback: "",
         file: "",
-        loading: "",
+        loading: false,
         name_file: false,
         total_file: "-",
         file_date: "",
@@ -151,10 +153,10 @@
           .then((r) => {
             this.name_file = "Data Berhasil di upload! . . . .";
             this.callback = r;
-            this.loading = "";
-            // setTimeout(() => {
-            //   window.location.reload();
-            // }, 1000);
+            this.loading = false;
+            setTimeout(() => {
+              window.location.reload();
+            }, 1000);
           })
           .catch((e) => {
             console.log(e);
