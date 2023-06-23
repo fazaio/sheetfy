@@ -16,7 +16,7 @@ const upload = async (req, res) => {
     console.log(total_file, "total");
 
     // overwite save to json
-    fs.writeFileSync("./tmp/data.json", JSON.stringify(datajson));
+    fs.writeFileSync("/tmp/data.json", JSON.stringify(datajson));
 
     res.send({ total: total_file });
   } catch (e) {
@@ -26,7 +26,7 @@ const upload = async (req, res) => {
 
 const read = async (req, res) => {
   try {
-    let json = fs.readFileSync("./tmp/data.json");
+    let json = fs.readFileSync("/tmp/data.json");
 
     let arr = JSON.parse(json)["Sheet1"];
 
@@ -43,7 +43,7 @@ const read = async (req, res) => {
 
 const count = async (req, res) => {
   try {
-    let json = fs.readFileSync("./tmp/data.json");
+    let json = fs.readFileSync("/tmp/data.json");
 
     let arr = JSON.parse(json)["Sheet1"];
 
@@ -53,7 +53,7 @@ const count = async (req, res) => {
       })
     );
 
-    const { birthtime, mtime } = fs.statSync("./tmp/data.json");
+    const { birthtime, mtime } = fs.statSync("/tmp/data.json");
     let file_uploaded = new Date(mtime).toLocaleString("id-ID", {
       timeZone: "Asia/Jakarta",
     });
@@ -67,7 +67,7 @@ const count = async (req, res) => {
 
 const check_notif_today = async (req, res) => {
   try {
-    let json = fs.readFileSync("./tmp/data.json");
+    let json = fs.readFileSync("/tmp/data.json");
     let arr = JSON.parse(json)["Sheet1"];
 
     const _day25_from_now = new Date(
