@@ -1,3 +1,4 @@
+var moment = require("moment");
 const fs = require("fs");
 const excelToJson = require("convert-excel-to-json");
 const tele = require("./tele");
@@ -5,18 +6,22 @@ const TelegramBot = require("node-telegram-bot-api");
 
 const upload = async (req, res) => {
   try {
-    console.log(req.files.data.data);
+    console.log("upload data!");
 
     // cover exl file upload to json
     const datajson = excelToJson({
       source: req.files.data.data,
     });
 
+    const total_file = datajson["Sheet1"].length;
+    console.log(total_file, "total fle");
+
     // overwite save to json
     fs.writeFileSync("./src/file/data.json", JSON.stringify(datajson));
 
-    res.send("uploaded!");
+    res.send({ total: total_file });
   } catch (e) {
+    console.log(e);
     res.send(e);
   }
 };
@@ -74,18 +79,18 @@ const check_notif_today = async (req, res) => {
     const token = "1590350768:AAFiIqGHLpAvkK6pOhaSnDqarY9Q6Mnnypk";
     const bot = new TelegramBot(token, { polling: true });
 
-    for (const row of found) {
-      console.log(row);
+    // for (const row of found) {
+    //   console.log(row);
 
-      let dob = new Date(row.K.toString().trim()).toLocaleDateString();
-      let entry_date = new Date(row.H.toString().trim()).toLocaleDateString();
-      let msg = `
-            Data Pensiun | Notif Tgl : ${new Date().toLocaleDateString()}
-            \nEmploye code: ${row.B.toString().trim()}\nEmploye name: ${row.C.toString().trim()}\nJob Code: ${row.D.toString().trim()}\nSex: ${row.E.toString().trim()}\nStatus: ${row.F.toString().trim()}\nAfedling: ${row.G.toString().trim()}\n Entry Date: ${entry_date}\n Place of Birth: ${row.J.toString().trim()}\n Date of Birth: ${dob}\n
-            `;
-      await tele(msg, bot);
-    }
-    res.send(found);
+    //   let dob = new Date(row.K.toString().trim()).toLocaleDateString();
+    //   let entry_date = new Date(row.H.toString().trim()).toLocaleDateString();
+    //   let msg = `
+    //         Data Pensiun | Notif Tgl : ${new Date().toLocaleDateString()}
+    //         \nEmploye code: ${row.B.toString().trim()}\nEmploye name: ${row.C.toString().trim()}\nJob Code: ${row.D.toString().trim()}\nSex: ${row.E.toString().trim()}\nStatus: ${row.F.toString().trim()}\nAfedling: ${row.G.toString().trim()}\n Entry Date: ${entry_date}\n Place of Birth: ${row.J.toString().trim()}\n Date of Birth: ${dob}\n
+    //         `;
+    //   await tele(msg, bot);
+    // }
+    res.send("tes");
   } catch (e) {
     console.log(e);
     res.send(e);

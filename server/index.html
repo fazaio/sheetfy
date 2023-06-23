@@ -112,10 +112,12 @@
         total_file: "-",
         file_date: "",
         callback_check: false,
+        url: `${window.location.protocol}//${window.location.host}`,
       };
     },
     mounted() {
       this.count();
+      console.log(this.url);
     },
     methods: {
       previewFiles(event) {
@@ -123,25 +125,16 @@
         this.file = event.target.files[0];
         console.log(event.target.files[0].name);
       },
-      jsondata() {
-        axios.get("https://tele-reminders.herokuapp.com/api").then((res) => {
-          this.data = res.data.inti;
+      count() {
+        axios.get(this.url + "/count").then((res) => {
+          this.total_file = res.data.total_file_row;
+          this.file_date = res.data.file_uploaded;
         });
       },
-      count() {
-        axios
-          .get("https://sapphire-ladybug-toga.cyclic.app/count")
-          .then((res) => {
-            this.total_file = res.data.total_file_row;
-            this.file_date = res.data.file_uploaded;
-          });
-      },
       test() {
-        axios
-          .get("https://sapphire-ladybug-toga.cyclic.app/check-today")
-          .then((res) => {
-            this.callback_check = true;
-          });
+        axios.get(this.url + "/check-today").then((res) => {
+          this.callback_check = true;
+        });
       },
       submitFile() {
         this.loading = "loading.....";
@@ -150,7 +143,7 @@
 
         console.log("submit file");
         axios
-          .post("https://sapphire-ladybug-toga.cyclic.app/upload", formData, {
+          .post(this.url + "/upload", formData, {
             headers: {
               "Content-Type": "multipart/form-data",
             },
@@ -159,9 +152,9 @@
             this.name_file = "Data Berhasil di upload! . . . .";
             this.callback = r;
             this.loading = "";
-            setTimeout(() => {
-              window.location.reload();
-            }, 1000);
+            // setTimeout(() => {
+            //   window.location.reload();
+            // }, 1000);
           })
           .catch((e) => {
             console.log(e);
