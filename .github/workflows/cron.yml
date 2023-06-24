@@ -12,4 +12,4 @@ jobs:
     steps:
       - name: cURL request
         # Hit the webhook endpoint to rebuild  from the "main" branch
-        run: curl https://sapphire-ladybug-toga.cyclic.app/check-today
+        run: curl https://odd-blue-ox-gear.cyclic.app/check-today
